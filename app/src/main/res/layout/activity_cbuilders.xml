@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".p2_builders.CoroutineBuildersActivity">
+
+    <Button
+        android:id="@+id/cbuilders_button_runblocking_uidispatcher_coroutine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RunBlocking CBuilder - UiThread" />
+
+    <Button
+        android:id="@+id/cbuilders_button_launch_uidispatcher_coroutine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch - UiDispatcher" />
+
+    <Button
+        android:id="@+id/cbuilders_button_launch_commonpool_coroutine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch - CommonPool Dispatcher" />
+
+</LinearLayout>
