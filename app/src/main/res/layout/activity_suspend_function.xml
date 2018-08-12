@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".p3_builders.CoroutineBuildersActivity">
+
+    <Button
+        android:id="@+id/suspend_function_button_race"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="GO!!" />
+
+
+    <TextView
+        android:id="@+id/suspend_function_textview_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:tag="Red"
+        android:textColor="#FF0000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/suspend_function_textview_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:tag="Green"
+        android:textColor="#00FF00"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/suspend_function_textview_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:tag="Blue"
+        android:textColor="#0000FF"
+        android:textSize="30sp" />
+
+</LinearLayout>

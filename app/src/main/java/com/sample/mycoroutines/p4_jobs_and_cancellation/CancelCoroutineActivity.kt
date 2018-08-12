@@ -1,4 +1,4 @@
-package com.sample.mycoroutines.p3_cancel
+package com.sample.mycoroutines.p4_jobs_and_cancellation
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

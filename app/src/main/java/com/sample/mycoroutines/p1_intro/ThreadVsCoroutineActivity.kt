@@ -15,8 +15,6 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
         initializeViews()
     }
 
-//    TODO demonstrate that coroutines do not keep the process that spawned them alive
-
     private fun initializeViews() {
         tvsc_button_spawn_threads.setOnClickListener {
             val n = tvsc_edittext_count.text.toString().toIntOrNull()
@@ -32,8 +30,6 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
             }
             println(">>>Finished spawning $n coroutines in : $timeElapsed")
         }
-        CoroutineExceptionHandler
-
     }
 
 
@@ -54,9 +50,6 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
         val numCoroutines = n ?: 0
         val jobs = List(numCoroutines) {
             launch {
-                val a = withContext(CommonPool){
-
-                }
                 delay(2000)
                 print(".")
             }

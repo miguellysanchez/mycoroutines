@@ -23,13 +23,17 @@
         <activity
             android:name=".p1_intro.ThreadVsCoroutineActivity"
             android:label="Threads vs. Coroutines" />
+        <activity android:name=".p1_intro.AsyncCompareActivity"
+            android:label="Async Operations Comparison"/>
+
         <activity
-            android:name=".p2_builders.CoroutineBuildersActivity"
+            android:name=".p3_builders.CoroutineBuildersActivity"
             android:label="Coroutine Builders" />
         <activity
             android:name=".SandboxActivity"
             android:label="Sandbox Test" />
-        <activity android:name=".p3_cancel.CancelCoroutineActivity" />
+        <activity android:name=".p4_jobs_and_cancellation.CancelCoroutineActivity" />
+        <activity android:name=".p2_suspend.SuspendFunctionsActivity" />
     </application>
 
 </manifest>

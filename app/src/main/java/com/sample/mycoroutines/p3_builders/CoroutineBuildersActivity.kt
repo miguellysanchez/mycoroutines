@@ -1,4 +1,4 @@
-package com.sample.mycoroutines.p2_builders
+package com.sample.mycoroutines.p3_builders
 
 import android.os.AsyncTask
 import android.os.Bundle
@@ -94,7 +94,7 @@ class CoroutineBuildersActivity : AppCompatActivity() {
     }
 
 
-    fun something() {
+    suspend fun something() {
         val rootParent = launch {
 
         }
@@ -121,9 +121,11 @@ class CoroutineBuildersActivity : AppCompatActivity() {
         }
 
 //      Deferred
-        async {
-
+        val o: Deferred<String> = async {
+            ""
         }
+        o.await()
+//        suspendCoroutine<> {  }
 
         val aDefeerredCoroutine = async() {
             220

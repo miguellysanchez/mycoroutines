@@ -24,16 +24,15 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/main_button_async_compare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1- Compare Async Operations" />
-
-            <Button
                 android:id="@+id/main_button_threads_vs_coroutines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="1- Threads vs Coroutines" />
+            <Button
+                android:id="@+id/main_button_suspend_functions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1- Suspend Functions" />
 
             <Button
                 android:id="@+id/main_button_coroutine_builders"
