@@ -21,14 +21,14 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
             val timeElapsed = measureTimeMillis {
                 startNThreads(n)
             }
-            println(">>>Finished spawning $n threads in : $timeElapsed")
+            println(">>>Finished spawning $n threads in : $timeElapsed ms")
         }
         tvsc_button_spawn_coroutines.setOnClickListener {
             val n = tvsc_edittext_count.text.toString().toIntOrNull()
             val timeElapsed = measureTimeMillis {
                 startNCoroutines(n)
             }
-            println(">>>Finished spawning $n coroutines in : $timeElapsed")
+            println(">>>Finished spawning $n coroutines in : $timeElapsed ms")
         }
     }
 
@@ -36,11 +36,12 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
     private fun startNThreads(n: Int?) {
         val numThreads = n ?: 0
         val jobs = List(numThreads) {
-            thread {
-                Thread.sleep(2000)
+            Thread {
+                Thread.sleep(1000)
                 print(",")
             }
         }
+        jobs.forEach{it.start()}
         jobs.forEach<Thread> { it.join() }
 
     }
@@ -50,7 +51,7 @@ class ThreadVsCoroutineActivity : AppCompatActivity() {
         val numCoroutines = n ?: 0
         val jobs = List(numCoroutines) {
             launch {
-                delay(2000)
+                delay(1000)
                 print(".")
             }
         }

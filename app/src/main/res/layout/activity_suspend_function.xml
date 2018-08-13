@@ -5,22 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".p3_builders.CoroutineBuildersActivity">
+    tools:context=".p2_suspend.SuspendFunctionsActivity">
+
+
+    <Button
+        android:id="@+id/suspend_function_button_consecutive_fxn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="START CONSECUTIVE SUSPEND FUNCTIONS" />
+
+    <Button
+        android:id="@+id/suspend_function_button_consecutive_fxn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="STOP CONSECUTIVE SUSPEND FUNCTIONS"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/suspend_function_textview_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Left"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/suspend_function_textview_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Right"
+            android:textSize="30sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/suspend_function_button_race"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:text="GO!!" />
+        android:layout_marginTop="40dp"
+        android:text="RACE!!" />
 
 
     <TextView
         android:id="@+id/suspend_function_textview_red"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:tag="Red"
+        android:text="0"
         android:textColor="#FF0000"
         android:textSize="30sp" />
 
@@ -28,8 +66,8 @@
         android:id="@+id/suspend_function_textview_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:tag="Green"
+        android:text="0"
         android:textColor="#00FF00"
         android:textSize="30sp" />
 
@@ -37,8 +75,8 @@
         android:id="@+id/suspend_function_textview_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:tag="Blue"
+        android:text="0"
         android:textColor="#0000FF"
         android:textSize="30sp" />
 
