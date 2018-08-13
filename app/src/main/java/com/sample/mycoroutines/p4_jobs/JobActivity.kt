@@ -25,6 +25,13 @@ class JobActivity : AppCompatActivity() {
 
     fun initializeViews() {
 
+        jobs_button_create_lazy_job.setOnClickListener {
+            createLazyJob()
+        }
+        jobs_button_start_lazy_job.setOnClickListener {
+            startLazyJob()
+        }
+
         jobs_button_launch_no_coop_cancel_job.setOnClickListener {
             launchJobWithNoCoopCancel()
         }
@@ -37,6 +44,25 @@ class JobActivity : AppCompatActivity() {
 
         jobs_button_cancel_job.setOnClickListener {
             cancelAJob()
+        }
+
+        jobs_button_timeout_job.setOnClickListener {
+            launchWithTimeout()
+        }
+    }
+
+    private fun createLazyJob() {
+        lazyJob = launch(start = CoroutineStart.LAZY) {
+            println(">>>Starting the lazy job")
+            delay(500)
+            println(">>>Finished the lazy job")
+        }
+        println(">>>Created a lazy job")
+    }
+
+    private fun startLazyJob() {
+        if (lazyJob != null && !lazyJob!!.isActive) {
+            lazyJob!!.start()
         }
     }
 
@@ -118,11 +144,33 @@ class JobActivity : AppCompatActivity() {
         delay(random.nextInt(2000))
         println("CANCELLABLE Worked $i ")
     }
-    
-    fun basicCoroutineCancel(){
-        val job = launch{
+
+    fun launchWithTimeout() {
+        launch(CommonPool) {
+            val numIterations = jobs_edittext_timeout.text.toString().toInt().coerceAtLeast(1).coerceAtMost(20000)
+            println(">>>Starting timeout")
+            var i = 0
+            try {
+                withTimeout(5000) {
+                    while (i < numIterations) {
+                        i++
+                        println("Running for iteration $i")
+                        delay(100)
+                    }
+                }
+                println(">>>Job has completed")
+
+            } catch (e: TimeoutCancellationException) {
+                println("!!!TimeoutCancellationException: $e")
+            }
+        }
+    }
+
+
+    fun basicCoroutineCancel() {
+        val job = launch {
             //use this flag to enable cancellation
-            while(isActive){
+            while (isActive) {
                 //...DO WORK
                 //or use delay/yield
                 delay(100)
@@ -134,6 +182,7 @@ class JobActivity : AppCompatActivity() {
     }
 
 //    fun threadName() = Thread.currentThread().name
+
 }
 
 
