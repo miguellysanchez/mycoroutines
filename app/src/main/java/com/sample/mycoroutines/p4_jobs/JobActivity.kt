@@ -62,6 +62,7 @@ class CancelCoroutineActivity : AppCompatActivity() {
     suspend fun doWorkA() {
         println("OOOOOOOOOOOO Starting work ${coroutineContext[CoroutineName]} at thread: ${threadName()}")
         delay(random.nextInt(2000))
+
         println("OOOOOOOOOOOO Finished work ${coroutineContext[CoroutineName]} at thread: ${threadName()}")
     }
 

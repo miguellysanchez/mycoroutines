@@ -102,15 +102,27 @@ class CoroutineBuildersActivity : AppCompatActivity() {
     }
 
     private fun runBlockingDemo() {
-        runBlocking() {
-
+        runBlocking {
+            //runBlocking should not be called on Android UI thread
+            // will cause : "java.lang.IllegalStateException:
+            // runBlocking is not allowed in Android main looper thread"
+            println("Do something first, but instead crash")
         }
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Should print after runBlocking, but is not printed")
     }
 
 
     private fun runBlockingProperlyDemo() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        launch{
+            val num = runBlocking<Int> {
+                println("1 - First")
+                delay(3000)
+                println("2 - Second even after delay, code outside prints after runBlocking finishes")
+                42
+            }
+            println("3 - Last after runBlocking: $num")//prints 42
+        }
+        println("0 - Outside the enclosing launch")
     }
 
     private fun threadName() = Thread.currentThread().name
