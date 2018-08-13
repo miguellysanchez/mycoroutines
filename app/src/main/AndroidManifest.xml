@@ -29,7 +29,7 @@
             android:name=".p3_builders.CoroutineBuildersActivity"
             android:label="Suspend Functions" />
         <activity
-            android:name=".p4_jobs_and_cancellation.CancelCoroutineActivity"
+            android:name=".p4_jobs.JobActivity"
             android:label="Cancelling Coroutines" />
 
         <activity

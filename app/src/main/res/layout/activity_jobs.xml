@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".p4_jobs.JobActivity">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
+
+    <Button
+        android:id="@+id/jobs_button_launch_no_coop_cancel_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch Job (No Coop Cancel)" />
+
+    <Button
+        android:id="@+id/jobs_button_launch_job_with_is_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch Job(isActive)" />
+
+    <Button
+        android:id="@+id/jobs_button_launch_job_with_delay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch Job(with delay)" />
+
+    <Button
+        android:id="@+id/jobs_button_cancel_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel Job" />
+
+</LinearLayout>
