@@ -7,22 +7,44 @@
     android:orientation="vertical"
     tools:context=".p5_context_dispatchers.DispatcherDemoActivity">
 
-    <Button
-        android:id="@+id/dispatchers_button_runblocking_uidispatcher_coroutine"
+    <TextView
+        android:id="@+id/dispatchers_textview_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RunBlocking CBuilder - UiThread" />
+        android:gravity="center"
+        android:text="UI Dispatcher Coroutine Name Here"
+        android:textSize="18sp" />
 
     <Button
-        android:id="@+id/dispatchers_button_launch_uidispatcher_coroutine"
+        android:id="@+id/dispatchers_button_run_ui_dispatcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch - UiDispatcher" />
+        android:text="Run on UI Dispatcher" />
+
 
     <Button
-        android:id="@+id/dispatchers_button_launch_commonpool_coroutine"
+        android:id="@+id/dispatchers_button_run_commonpool_dispatcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch - CommonPool Dispatcher" />
+        android:text="Run On CommonPool Dispatcher" />
+
+
+    <Button
+        android:id="@+id/dispatchers_button_run_unconfined_dispatcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Run on Unconfined Dispatcher" />
+
+    <Button
+        android:id="@+id/dispatchers_button_run_nstc_dispatcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Single Thread Context Dispatcher" />
+
+    <Button
+        android:id="@+id/dispatchers_button_run_nftpc_dispatcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Fixed Thread Pool Context Disptcher" />
 
 </LinearLayout>

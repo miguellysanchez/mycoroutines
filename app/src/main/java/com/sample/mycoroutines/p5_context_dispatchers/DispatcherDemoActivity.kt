@@ -1,5 +1,6 @@
 package com.sample.mycoroutines.p5_context_dispatchers
 
+import android.app.ProgressDialog
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,9 +10,12 @@ import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.coroutines.experimental.ContinuationInterceptor
 import kotlin.coroutines.experimental.coroutineContext
 
 class DispatcherDemoActivity : AppCompatActivity() {
+
+    lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,86 +24,113 @@ class DispatcherDemoActivity : AppCompatActivity() {
     }
 
     fun initializeViews() {
-        dispatchers_button_runblocking_uidispatcher_coroutine.setOnClickListener {
-            runBlockingOnUiThreadDemo()
-        }
-        dispatchers_button_launch_uidispatcher_coroutine.setOnClickListener {
+        dialog = ProgressDialog(this)
+        dispatchers_button_run_ui_dispatcher.setOnClickListener {
             println(">>>[LaunchOnUiDispatcher]")
             launchOnUiDispatcherDemo()
         }
-        dispatchers_button_launch_commonpool_coroutine.setOnClickListener {
+        dispatchers_button_run_commonpool_dispatcher.setOnClickListener {
             println(">>>[LaunchOnCommonPoolDispatcher]")
+
             launchOnCommonPoolDispatcherDemo()
         }
+        dispatchers_button_run_unconfined_dispatcher.setOnClickListener {
+            launchOnUnconfinedDispatcherDemo()
+        }
+        dispatchers_button_run_nstc_dispatcher.setOnClickListener {
+            launchOnNewSingleThreadContextDemo()
+        }
+        dispatchers_button_run_nftpc_dispatcher.setOnClickListener {
+            launchOnNewFixedThreadPoolDemo()
+        }
+
     }
 
-    //    runBlocking blocks the THREAD it is launched from
-    fun runBlockingOnUiThreadDemo() {
-
-        runBlocking(UI) {
-            println(">>>Starting: runBlocking (${threadName()})")
-            Thread.sleep(1000)
-            println(">>>Finished: runBlocking (${threadName()})")
-        }
-        println(">>>Middle outside (${threadName()})")
-        run {
-            println(">>>Starting: run (${threadName()})")
-            Thread.sleep(200)
-            println(">>>Finished: run (${threadName()})")
-        }
-    }
 
     fun launchOnUiDispatcherDemo() {
-        launch(UI) {
-            val job = launch(CommonPool) {
-                printlnSuspend(">>>Starting: launch (${threadName()})")
-                delay(10000)
-                printlnSuspend(">>>Finished: launch (${threadName()})")
-            }
-            delay(1)
-
-//            launch(UI) {
-//                printlnSuspend(">>>Starting: launch 2 (${threadName()}) ")
-//                delay(1)
-//                printlnSuspend(">>>Finished: launch 2 (${threadName()})")
-//            }
-
-            println(">>>Middle outside (${threadName()})")
-            run {
-                println(">>>Starting: run (${threadName()})")
-                delay(2000)
-                job.join()
-                println(">>>Finished: run (${threadName()})")
+        //Contains the UI dispatcher with UUID for its name
+        val cName = "UI_" + generateRandomName()
+        launch(UI + CoroutineName(cName)) {
+            var i = 0
+            while (i < 10) {
+                i++
+                println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                //can run view rendering here since it is inside main thread
+                dispatchers_textview_indicator.text = "${coroutineContext[CoroutineName]} -> ($i)"
+                delay(500)
             }
         }
     }
 
     fun launchOnCommonPoolDispatcherDemo() {
-        launch(CommonPool) {
-            println(">>>Starting: launch (${threadName()}) ")
-            Thread.sleep(1000)
-            println(">>>Finished: launch (${threadName()})")
-        }
-        println(">>>Middle outside (${threadName()})")
-        run {
-            println(">>>Starting: run (${threadName()})")
-            Thread.sleep(200)
-            println(">>>Finished: run (${threadName()})")
+        val cName = "CommonPool_" + generateRandomName()
+        launch(CommonPool + CoroutineName(cName)) {
+            var i = 0
+            while (i < 20) {
+                i++
+                println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                delay(500)
+            }
         }
     }
 
-
-    suspend fun printlnSuspend(s: String) {
-        println(s)
+    fun launchOnUnconfinedDispatcherDemo() {
+        val cName = "Unconfined_" + generateRandomName()
+        launch(Unconfined + CoroutineName(cName)) {
+            var i = 0
+            while (i < 15) {
+                i++
+                println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                delay(500)
+            }
+        }
     }
 
+    fun launchOnNewSingleThreadContextDemo() {
+        val cName = "NewSingleThreadContext_" + generateRandomName()
+        val genThreadName = "STC_${generateRandomName(4)}"
+        val stc = newSingleThreadContext(genThreadName)
+        val job = launch(stc + CoroutineName(cName)) {
+            var i = 0
+            while (i < 15) {
+                i++
+                println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                delay(500)
+            }
+        }
+        launch(UI) {
+            job.join()
+            println("Closing thread @$genThreadName")
+            stc.close()
+        }
+    }
+
+    fun launchOnNewFixedThreadPoolDemo() {
+        val cName = "NewFixedThreadPool_" + generateRandomName()
+        val genThreadName = "STC_${generateRandomName(4)}"
+        val stc = newFixedThreadPoolContext(4, genThreadName)
+        val job = launch(stc + CoroutineName(cName)) {
+            var i = 0
+            while (i < 20) {
+                i++
+                println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                delay(500)
+            }
+        }
+        launch(UI) {
+            job.join()
+            println("Closing thread @$genThreadName")
+            stc.close()
+        }
+
+    }
 
     suspend fun something() {
         val rootParent = launch {
 
         }
 //        Builders
-        val anExecutor: ExecutorService = Executors.newFixedThreadPool(100)
+        val anExecutor: ExecutorService = Executors.newFixedThreadPool(4)
 
         val asyncTaskExecutor = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
         launch(anExecutor.asCoroutineDispatcher()) {
@@ -136,6 +167,15 @@ class DispatcherDemoActivity : AppCompatActivity() {
         coroutineContext // accesses the current coroutine context within a suspend function
     }
 
-    fun threadName() = Thread.currentThread().name
+    private fun threadName() = Thread.currentThread().name
+
+    private fun generateRandomName(length: Int = 31): String {
+        val chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        var s = ""
+        for (i in 0..length) {
+            s += chars[Math.floor(Math.random() * chars.length).toInt()]
+        }
+        return s
+    }
 
 }
