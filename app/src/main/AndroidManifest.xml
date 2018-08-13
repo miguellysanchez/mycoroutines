@@ -27,11 +27,17 @@
             android:label="Suspend Functions" />
         <activity
             android:name=".p3_builders.CoroutineBuildersActivity"
-            android:label="Coroutine Builders" />
+            android:label="Suspend Functions" />
+        <activity
+            android:name=".p4_jobs_and_cancellation.CancelCoroutineActivity"
+            android:label="Cancelling Coroutines" />
+
+        <activity
+            android:name=".p5_context_dispatchers.DispatcherDemoActivity"
+            android:label="Contexts and Dispatchers" />
         <activity
             android:name=".SandboxActivity"
             android:label="Sandbox Test" />
-        <activity android:name=".p4_jobs_and_cancellation.CancelCoroutineActivity" />
     </application>
 
 </manifest>

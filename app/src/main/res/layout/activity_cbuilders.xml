@@ -1,28 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".p3_builders.CoroutineBuildersActivity">
+    tools:context=".MainActivity">
+
 
     <Button
-        android:id="@+id/cbuilders_button_runblocking_uidispatcher_coroutine"
+        android:id="@+id/cbuilders_button_launch_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RunBlocking CBuilder - UiThread" />
+        android:text="Launch Demo" />
+    <Button
+        android:id="@+id/cbuilders_button_launch_error_demo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch with Error Demo" />
 
     <Button
-        android:id="@+id/cbuilders_button_launch_uidispatcher_coroutine"
+        android:id="@+id/cbuilders_button_async_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch - UiDispatcher" />
+        android:text="Async Demo" />
 
     <Button
-        android:id="@+id/cbuilders_button_launch_commonpool_coroutine"
+        android:id="@+id/cbuilders_button_async_error_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Launch - CommonPool Dispatcher" />
+        android:text="Async with Error Demo" />
+
+    <Button
+        android:id="@+id/cbuilders_button_run_blocking_demo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Run Blocking Demo" />
+
+
+    <Button
+        android:id="@+id/cbuilders_button_run_blocking_properly_demo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Run Blocking Properly Demo" />
 
 </LinearLayout>

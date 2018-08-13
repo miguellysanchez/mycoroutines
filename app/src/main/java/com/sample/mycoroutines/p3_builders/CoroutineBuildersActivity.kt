@@ -1,17 +1,15 @@
 package com.sample.mycoroutines.p3_builders
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.sample.mycoroutines.R
+import com.sample.mycoroutines.RandomOperations
 import kotlinx.android.synthetic.main.activity_cbuilders.*
 import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.UI
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import kotlin.coroutines.experimental.coroutineContext
+import java.util.*
 
 class CoroutineBuildersActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,123 +17,107 @@ class CoroutineBuildersActivity : AppCompatActivity() {
         initializeViews()
     }
 
-    fun initializeViews() {
-        cbuilders_button_runblocking_uidispatcher_coroutine.setOnClickListener {
-            runBlockingOnUiThreadDemo()
-        }
-        cbuilders_button_launch_uidispatcher_coroutine.setOnClickListener {
-            println(">>>[LaunchOnUiDispatcher]")
-            launchOnUiDispatcherDemo()
-        }
-        cbuilders_button_launch_commonpool_coroutine.setOnClickListener {
-            println(">>>[LaunchOnCommonPoolDispatcher]")
-            launchOnCommonPoolDispatcherDemo()
-        }
+    private fun initializeViews() {
+        cbuilders_button_launch_demo.setOnClickListener { launchDemo() }
+        cbuilders_button_launch_error_demo.setOnClickListener { launchWithErrorDemo() }
+        cbuilders_button_async_demo.setOnClickListener { asyncDemo() }
+        cbuilders_button_async_error_demo.setOnClickListener { asyncWithErrorDemo() }
+        cbuilders_button_run_blocking_demo.setOnClickListener { runBlockingDemo() }
+        cbuilders_button_run_blocking_properly_demo.setOnClickListener { runBlockingProperlyDemo() }
     }
 
-    //    runBlocking blocks the THREAD it is launched from
-    fun runBlockingOnUiThreadDemo() {
 
-        runBlocking(UI) {
-            println(">>>Starting: runBlocking (${threadName()})")
-            Thread.sleep(1000)
-            println(">>>Finished: runBlocking (${threadName()})")
-        }
-        println(">>>Middle outside (${threadName()})")
-        run {
-            println(">>>Starting: run (${threadName()})")
-            Thread.sleep(200)
-            println(">>>Finished: run (${threadName()})")
-        }
-    }
-
-    fun launchOnUiDispatcherDemo() {
-        launch(UI) {
-            val job = launch(CommonPool) {
-                printlnSuspend(">>>Starting: launch (${threadName()})")
-                delay(10000)
-                printlnSuspend(">>>Finished: launch (${threadName()})")
-            }
-            delay(1)
-
-//            launch(UI) {
-//                printlnSuspend(">>>Starting: launch 2 (${threadName()}) ")
-//                delay(1)
-//                printlnSuspend(">>>Finished: launch 2 (${threadName()})")
-//            }
-
-            println(">>>Middle outside (${threadName()})")
-            run {
-                println(">>>Starting: run (${threadName()})")
+    private fun launchDemo() {
+        launch {
+            val job = launch {
+                println("->World!!")
+                delay(1000)
+                println("-->Hello World")
                 delay(2000)
-                job.join()
-                println(">>>Finished: run (${threadName()})")
             }
+            println("Hello,")
+            job.join()
+            println("--->Finished!")
         }
     }
 
-    fun launchOnCommonPoolDispatcherDemo() {
-        launch(CommonPool) {
-            println(">>>Starting: launch (${threadName()}) ")
-            Thread.sleep(1000)
-            println(">>>Finished: launch (${threadName()})")
+    private fun launchWithErrorDemo() {
+        launch {
+            println("->World!!")
+            delay(1000)
+            println("---> Hello World")
+            throw IllegalStateException()
         }
-        println(">>>Middle outside (${threadName()})")
-        run {
-            println(">>>Starting: run (${threadName()})")
-            Thread.sleep(200)
-            println(">>>Finished: run (${threadName()})")
+        println("Hello,")
+    }
+
+    private suspend fun getDelayedInt1(): Int {
+        delay(1000)
+        return Random().nextInt(100)
+    }
+
+    private suspend fun getDelayedInt2(): Int {
+        delay(1000)
+        return Random().nextInt(100)
+    }
+
+    private fun asyncDemo() {
+        val startTime = System.currentTimeMillis()
+        val deferredInt1: Deferred<Int> = async {
+            getDelayedInt1()
+        }
+        val deferredInt2: Deferred<Int> = async {
+            getDelayedInt2()
+        }
+        async {
+            println("Starting async operation")
+            val int1 = deferredInt1.await()
+            val int2 = deferredInt2.await()
+            println("The sum of $int1 and $int2 = ${int1 + int2}")
+            println("Async operation completed in ${System.currentTimeMillis() - startTime} ms")
         }
     }
 
-
-    suspend fun printlnSuspend(s: String) {
-        println(s)
-    }
-
-
-    suspend fun something() {
-        val rootParent = launch {
-
-        }
-//        Builders
-        val anExecutor: ExecutorService = Executors.newFixedThreadPool(100)
-
-        val asyncTaskExecutor = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
-        launch(anExecutor.asCoroutineDispatcher()) {
-
-        }
-
-
-        launch(parent = rootParent) {
-
-        }
-
-        run {
-
-        }
-        runBlocking {
-            withContext(start = CoroutineStart.DEFAULT, context = CommonPool) {
-
+    private fun asyncWithErrorDemo() {
+        try {
+            val startTime = System.currentTimeMillis()
+            val deferredInt1: Deferred<Int> = async {
+                getDelayedInt1()
             }
-        }
-
-//      Deferred
-        val o: Deferred<String> = async {
-            ""
-        }
-        o.await()
-//        suspendCoroutine<> {  }
-
-        val aDefeerredCoroutine = async() {
-            220
+            val deferredInt2: Deferred<Int> = async {
+                getDelayedInt2()
+                throw IllegalStateException("Caught exception in the async")
+            }
+            async {
+                println("Starting async operation")
+                try {
+                    val int1 = deferredInt1.await()
+                    val int2 = deferredInt2.await()
+                    println("The sum of $int1 and $int2 = ${int1 + int2}")
+                    println("Async operation completed in ${System.currentTimeMillis() - startTime} ms")
+                } catch (e: Exception) {
+                    println("Caught exception : $e")
+                    e.printStackTrace()
+                }
+            }
+        } catch (e: Exception) {
+            println("Caught an exception: $e")
         }
     }
 
-    suspend fun aSuspendFun() {
-        coroutineContext // accesses the current coroutine context within a suspend function
+    private fun runBlockingDemo() {
+        runBlocking() {
+
+        }
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun threadName() = Thread.currentThread().name
+
+    private fun runBlockingProperlyDemo() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun threadName() = Thread.currentThread().name
+
 
 }
