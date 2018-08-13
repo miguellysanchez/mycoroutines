@@ -8,6 +8,7 @@ import com.sample.mycoroutines.R
 import kotlinx.android.synthetic.main.activity_dispatchers.*
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.coroutines.experimental.ContinuationInterceptor
@@ -15,6 +16,7 @@ import kotlin.coroutines.experimental.coroutineContext
 
 class DispatcherDemoActivity : AppCompatActivity() {
 
+    val random = Random()
     lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,9 @@ class DispatcherDemoActivity : AppCompatActivity() {
         }
         dispatchers_button_run_nftpc_dispatcher.setOnClickListener {
             launchOnNewFixedThreadPoolDemo()
+        }
+        dispatchers_button_run_with_context.setOnClickListener {
+            withContextDemo()
         }
 
     }
@@ -125,41 +130,40 @@ class DispatcherDemoActivity : AppCompatActivity() {
 
     }
 
-    suspend fun something() {
-        val rootParent = launch {
-
-        }
-//        Builders
-        val anExecutor: ExecutorService = Executors.newFixedThreadPool(4)
-
-        val asyncTaskExecutor = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
-        launch(anExecutor.asCoroutineDispatcher()) {
-
-        }
-
-
-        launch(parent = rootParent) {
-
-        }
-
-        run {
-
-        }
-        runBlocking {
-            withContext(start = CoroutineStart.DEFAULT, context = CommonPool) {
-
+    fun withContextDemo() {
+        launch {
+            var randomNum = 0
+            var i = 0
+            var dispatcher: CoroutineDispatcher = UI
+            val stc = newSingleThreadContext("STC-01")
+            val ftpc = newFixedThreadPoolContext(3, "FTPC")
+            while (i < 20) {
+                i++
+                dispatcher  = when (randomNum % 4) {
+                    0 -> UI
+                    1 -> CommonPool
+                    2 ->  stc
+                    else -> ftpc
+                }
+                println(">>>Using dispatcher: ${dispatcher[ContinuationInterceptor]}")
+                randomNum = withContext(dispatcher){
+                    println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
+                    delay(500)
+                    random.nextInt()
+                }
+                println(">> Number generated: $randomNum")
             }
         }
+    }
 
-//      Deferred
-        val o: Deferred<String> = async {
-            ""
+    suspend fun extraStuff() {
+        val anExecutor: ExecutorService = Executors.newFixedThreadPool(4)
+        val asyncTaskExecDispatcher = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+        launch(anExecutor.asCoroutineDispatcher()) {
+            delay(100)
         }
-        o.await()
-//        suspendCoroutine<> {  }
-
-        val aDefeerredCoroutine = async() {
-            220
+        launch(asyncTaskExecDispatcher){
+            delay(100)
         }
     }
 
