@@ -79,29 +79,25 @@ class CoroutineBuildersActivity : AppCompatActivity() {
     }
 
     private fun asyncWithErrorDemo() {
-        try {
-            val startTime = System.currentTimeMillis()
-            val deferredInt1: Deferred<Int> = async {
-                getDelayedInt1()
+        val startTime = System.currentTimeMillis()
+        val deferredInt1: Deferred<Int> = async {
+            getDelayedInt1()
+        }
+        val deferredInt2: Deferred<Int> = async {
+            getDelayedInt2()
+            throw IllegalStateException("Caught exception in the async")
+        }
+        async {
+            println("Starting async operation")
+            try {
+                val int1 = deferredInt1.await()
+                val int2 = deferredInt2.await()
+                println("The sum of $int1 and $int2 = ${int1 + int2}")
+                println("Async operation completed in ${System.currentTimeMillis() - startTime} ms")
+            } catch (e: Exception) {
+                println("Caught exception : $e")
+                e.printStackTrace()
             }
-            val deferredInt2: Deferred<Int> = async {
-                getDelayedInt2()
-                throw IllegalStateException("Caught exception in the async")
-            }
-            async {
-                println("Starting async operation")
-                try {
-                    val int1 = deferredInt1.await()
-                    val int2 = deferredInt2.await()
-                    println("The sum of $int1 and $int2 = ${int1 + int2}")
-                    println("Async operation completed in ${System.currentTimeMillis() - startTime} ms")
-                } catch (e: Exception) {
-                    println("Caught exception : $e")
-                    e.printStackTrace()
-                }
-            }
-        } catch (e: Exception) {
-            println("Caught an exception: $e")
         }
     }
 
