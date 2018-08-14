@@ -8,10 +8,7 @@ import kotlinx.android.synthetic.main.activity_channels.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.CoroutineName
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.channels.actor
-import kotlinx.coroutines.experimental.channels.consumeEach
-import kotlinx.coroutines.experimental.channels.produce
+import kotlinx.coroutines.experimental.channels.*
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.Random
@@ -33,6 +30,9 @@ class ChannelsActivity : AppCompatActivity() {
         }
         channels_button_run_producer_consumer.setOnClickListener {
             producerConsumer()
+        }
+        channels_button_run_ticker.setOnClickListener {
+            tickerChannelDemo()
         }
         channels_button_run_actor.setOnClickListener {
             doActorDemo()
@@ -94,6 +94,21 @@ class ChannelsActivity : AppCompatActivity() {
                 delay(1000)
             }
             println("Finished consumption")
+        }
+    }
+
+    private fun tickerChannelDemo() {
+        //creates a ticker coroutine that ticks per period
+        val tickerChannel = ticker(delay = 1000L)
+        launch(UI) {
+            val startTime = System.currentTimeMillis()
+            var i = 0
+            while (i < 10) {
+                i++
+                tickerChannel.receive()
+                val currTime = System.currentTimeMillis() - startTime
+                channels_textview_indicator.text = "TICK [$i] at $currTime"
+            }
         }
     }
 

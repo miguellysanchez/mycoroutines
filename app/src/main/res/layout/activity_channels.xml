@@ -29,6 +29,12 @@
         android:text="Produce and Consume" />
 
     <Button
+        android:id="@+id/channels_button_run_ticker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ticker Tocker" />
+
+    <Button
         android:id="@+id/channels_button_run_actor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
