@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:inputType="textMultiLine"
         android:text="UI channels Coroutine Name Here"
         android:textSize="18sp" />
 
@@ -21,6 +22,17 @@
         android:layout_height="wrap_content"
         android:text="Run Simple channels demo" />
 
-    
+    <Button
+        android:id="@+id/channels_button_run_producer_consumer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Produce and Consume" />
+
+    <Button
+        android:id="@+id/channels_button_run_actor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actor Demo" />
+
 
 </LinearLayout>
