@@ -46,10 +46,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Fixed Thread Pool Context Disptcher" />
+
     <Button
         android:id="@+id/dispatchers_button_run_with_context"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Run withContext on random dispatchers" />
+
+
+    <Button
+        android:id="@+id/dispatchers_button_parent_children_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Start parent job" />
+
+    <Button
+        android:id="@+id/dispatchers_button_cancel_parent_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel parent job" />
 
 </LinearLayout>

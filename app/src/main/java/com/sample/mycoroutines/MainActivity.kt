@@ -7,6 +7,7 @@ import com.sample.mycoroutines.p2_suspend.SuspendFunctionsActivity
 import com.sample.mycoroutines.p3_builders.CoroutineBuildersActivity
 import com.sample.mycoroutines.p5_context_dispatchers.DispatcherDemoActivity
 import com.sample.mycoroutines.p4_jobs.JobActivity
+import com.sample.mycoroutines.p6_channels.ChannelsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         }
         main_button_dispatchers.setOnClickListener {
             startActivityClass<DispatcherDemoActivity>()
+        }
+        main_button_channels.setOnClickListener {
+            startActivityClass<ChannelsActivity>()
         }
 
     }

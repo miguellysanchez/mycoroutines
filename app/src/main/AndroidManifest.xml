@@ -36,6 +36,9 @@
             android:name=".p5_context_dispatchers.DispatcherDemoActivity"
             android:label="Contexts and Dispatchers" />
         <activity
+            android:name=".p6_channels.ChannelsActivity"
+            android:label="Channels" />
+        <activity
             android:name=".SandboxActivity"
             android:label="Sandbox Test" />
     </application>

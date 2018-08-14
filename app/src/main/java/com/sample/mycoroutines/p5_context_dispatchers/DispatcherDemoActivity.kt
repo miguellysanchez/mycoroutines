@@ -18,6 +18,7 @@ class DispatcherDemoActivity : AppCompatActivity() {
 
     val random = Random()
     lateinit var dialog: ProgressDialog
+    var parentJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,12 @@ class DispatcherDemoActivity : AppCompatActivity() {
         dispatchers_button_run_with_context.setOnClickListener {
             withContextDemo()
         }
-
+        dispatchers_button_parent_children_job.setOnClickListener {
+            parentCoroutineWithChildren()
+        }
+        dispatchers_button_cancel_parent_job.setOnClickListener {
+            cancelParentJob()
+        }
     }
 
 
@@ -139,14 +145,14 @@ class DispatcherDemoActivity : AppCompatActivity() {
             val ftpc = newFixedThreadPoolContext(3, "FTPC")
             while (i < 20) {
                 i++
-                dispatcher  = when (randomNum % 4) {
+                dispatcher = when (randomNum % 4) {
                     0 -> UI
                     1 -> CommonPool
-                    2 ->  stc
+                    2 -> stc
                     else -> ftpc
                 }
                 println(">>>Using dispatcher: ${dispatcher[ContinuationInterceptor]}")
-                randomNum = withContext(dispatcher){
+                randomNum = withContext(dispatcher) {
                     println("Running i[$i] CName[${coroutineContext[CoroutineName]}] w/ Dispatcher[${coroutineContext[ContinuationInterceptor]}] @${threadName()}]")
                     delay(500)
                     random.nextInt()
@@ -156,13 +162,65 @@ class DispatcherDemoActivity : AppCompatActivity() {
         }
     }
 
+    fun parentCoroutineWithChildren() {
+        parentJob = Job()
+        launch(UI, parent = parentJob) {
+            var a = 0
+            while (a < 20) {
+                a++
+                println("A $a - Running with parent Job[${coroutineContext[Job]}] | Dispatcher [${coroutineContext[ContinuationInterceptor]}] ")
+                delay(1000)
+            }
+        }
+
+        launch(CommonPool, parent = parentJob) {
+            launch(coroutineContext) {
+                var b = 0
+                while (b < 20) {
+                    b++
+                    println("B $b - Running with parent Job[${coroutineContext[Job]}] | Dispatcher [${coroutineContext[ContinuationInterceptor]}] ")
+                    delay(1000)
+                }
+            }
+            launch(coroutineContext) {
+                var c = 0
+                while (c < 20) {
+                    c++
+                    println("C $c - Running with parent Job[${coroutineContext[Job]}] | Dispatcher [${coroutineContext[ContinuationInterceptor]}] ")
+                    delay(1000)
+                }
+            }
+            launch {
+                var d = 0
+                while (d < 20) {
+                    d++
+                    println("D $d - Running with parent Job[${coroutineContext[Job]}] | Dispatcher [${coroutineContext[ContinuationInterceptor]}] ")
+                    delay(1000)
+                }
+            }
+            var e = 0
+            while (e < 12) {
+                e++
+                println("E $e - Running with parent Job[${coroutineContext[Job]}] | Dispatcher [${coroutineContext[ContinuationInterceptor]}] ")
+                delay(1000)
+            }
+        }
+    }
+
+    fun cancelParentJob() {
+        if (parentJob != null) {
+            parentJob!!.cancel()
+            parentJob = null
+        }
+    }
+
     suspend fun extraStuff() {
         val anExecutor: ExecutorService = Executors.newFixedThreadPool(4)
         val asyncTaskExecDispatcher = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
         launch(anExecutor.asCoroutineDispatcher()) {
             delay(100)
         }
-        launch(asyncTaskExecDispatcher){
+        launch(asyncTaskExecDispatcher) {
             delay(100)
         }
     }

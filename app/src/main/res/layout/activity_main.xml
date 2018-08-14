@@ -52,6 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="5- Dispatchers" />
+            <Button
+                android:id="@+id/main_button_channels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6- Channels" />
+
+
         </LinearLayout>
 
     </ScrollView>
