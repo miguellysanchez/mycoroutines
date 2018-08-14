@@ -5,12 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.sample.mycoroutines.R
 import kotlinx.android.synthetic.main.activity_channels.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.CoroutineName
+import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.*
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.selects.select
 import java.util.Random
 import kotlin.coroutines.experimental.coroutineContext
 
@@ -37,6 +35,9 @@ class ChannelsActivity : AppCompatActivity() {
         channels_button_run_actor.setOnClickListener {
             doActorDemo()
         }
+//        channels_button_run_select.setOnClickListener {
+//            selectClauseDemo()
+//        }
     }
 
     private fun simpleChannels() {
@@ -95,11 +96,14 @@ class ChannelsActivity : AppCompatActivity() {
             }
             println("Finished consumption")
         }
+
     }
 
     private fun tickerChannelDemo() {
         //creates a ticker coroutine that ticks per period
-        val tickerChannel = ticker(delay = 1000L)
+        val tickerChannel =
+                ticker(delay = 1000L, initialDelay = 2000L)
+
         launch(UI) {
             val startTime = System.currentTimeMillis()
             var i = 0
@@ -139,6 +143,30 @@ class ChannelsActivity : AppCompatActivity() {
             chuckNorris.close()
         }
     }
+
+//    private fun selectClauseDemo() {
+//        launch {
+//            val aString = select<String> {
+//                launch {
+//                    firstSuspendFunction()
+//                    secondSuspendFunction()
+//                }
+//            }
+//            println(">>>>This is the selected string: $aString")
+//        }
+//    }
+//
+//    suspend fun firstSuspendFunction(): String {
+//        delay(random.nextInt(4500).coerceAtLeast(500))
+//        return "1111111111111111"
+//
+//    }
+//
+//    suspend fun secondSuspendFunction(): String {
+//        delay(random.nextInt(4000).coerceAtLeast(500))
+//        return "222222222222222"
+//
+//    }
 
 
 }
