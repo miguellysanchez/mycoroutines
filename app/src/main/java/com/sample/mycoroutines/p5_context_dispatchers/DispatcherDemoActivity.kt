@@ -61,6 +61,7 @@ class DispatcherDemoActivity : AppCompatActivity() {
     fun launchOnUiDispatcherDemo() {
         //Contains the UI dispatcher with UUID for its name
         val cName = "UI_" + generateRandomName()
+
         launch(UI + CoroutineName(cName)) {
             var i = 0
             while (i < 10) {

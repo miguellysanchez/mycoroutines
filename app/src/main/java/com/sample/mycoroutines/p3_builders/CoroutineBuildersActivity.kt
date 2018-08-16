@@ -89,15 +89,11 @@ class CoroutineBuildersActivity : AppCompatActivity() {
         }
         async {
             println("Starting async operation")
-            try {
                 val int1 = deferredInt1.await()
                 val int2 = deferredInt2.await()
                 println("The sum of $int1 and $int2 = ${int1 + int2}")
                 println("Async operation completed in ${System.currentTimeMillis() - startTime} ms")
-            } catch (e: Exception) {
-                println("Caught exception : $e")
-                e.printStackTrace()
-            }
+
         }
     }
 
